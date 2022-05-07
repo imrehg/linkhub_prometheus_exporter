@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "linkhub_prometheus_exporter"
-version = "0.0.0.post2.dev0+508bf1e"
+version = "0.1.0"
 description = "A Prometheus metrics exporter for Alcatel Linkhub 4G router boxes"
 authors = ["Gergely Imreh <gergely@imreh.net>"]
 
