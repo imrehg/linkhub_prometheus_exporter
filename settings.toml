@@ -1,0 +1,5 @@
+[default]
+polling_interval_seconds = 5
+box_address = '192.168.1.1'
+exporter_address = '0.0.0.0'
+exporter_port = 9877

@@ -4,6 +4,10 @@ A Prometheus exporter for Alcatel Linkhub boxes.
 
 Tested with an Alcatel HH41 4G LTE hotspot WiFi router.
 
+## Usage
+
+Detailed usage TBC.
+
 ## License
 
 Copyright 2022 Gergely Imreh <gergely@imreh.net>
