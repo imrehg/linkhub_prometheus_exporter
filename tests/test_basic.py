@@ -74,23 +74,23 @@ def test_metrics(requests_mock):
 
     requests_mock.post(
         box_api_url,
-        json={"result": NETWORK_INFO},
+        json={"jsonrpc": "2.0", "result": NETWORK_INFO, "id": "1"},
         additional_matcher=matcher("GetNetworkInfo"),
     )
     requests_mock.post(
         box_api_url,
-        json={"result": SYSTEM_STATUS},
+        json={"jsonrpc": "2.0", "result": SYSTEM_STATUS, "id": "2"},
         additional_matcher=matcher("GetSystemStatus"),
     )
     requests_mock.post(
         box_api_url,
-        json={"result": USAGE_RECORD},
+        json={"jsonrpc": "2.0", "result": USAGE_RECORD, "id": "3"},
         additional_matcher=matcher("GetUsageRecord"),
     )
 
     # Do a metrics update
     router_metrics = RouterMetrics("", box_addr, 10)
-    router_metrics.fetch_new()
+    router_metrics.fetch_metrics()
 
     # Compare with expectations
     assert REGISTRY.get_sample_value("sinr") == pytest.approx(

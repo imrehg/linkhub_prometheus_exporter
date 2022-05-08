@@ -18,6 +18,7 @@ prometheus-client = "^0.14.1"
 requests = "^2.27.1"
 dynaconf = "^3.1.8"
 types-requests = "^2.27.25"
+jsonrpcclient = "^4.0.2"
 
 [tool.poetry.dev-dependencies]
 pytest = "*"
