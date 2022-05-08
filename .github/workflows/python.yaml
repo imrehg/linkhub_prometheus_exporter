@@ -47,28 +47,3 @@ jobs:
         run: |
           poetry run coverage run -m pytest
           poetry run coverage report -m
-
-  publish:
-    name: "Publish to PyPI"
-    needs: test
-    # Publish on the main branch only, either regular merges (dev releases implicitly
-    # or tags, which will be proper release due to PEP440 versioning
-    if: github.ref_name == 'main' || github.event_name == 'tag'
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-
-      - name: Set up Python 3.9
-        uses: actions/setup-python@v1
-        with:
-          python-version: 3.9
-
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          python -m pip install 'poetry>=1.2.0b1'
-          poetry plugin add poetry-dynamic-versioning-plugin
-          poetry publish --no-interaction --build --username __token__ --password ${{ secrets.PYPI_DEPLOY_TOKEN }}
