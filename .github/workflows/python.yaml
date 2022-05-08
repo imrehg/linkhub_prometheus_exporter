@@ -80,6 +80,11 @@ jobs:
     if: ${{ github.ref_type	 == 'tag'}}
     steps:
       -
+        name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      -
         name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
       -
@@ -92,5 +97,6 @@ jobs:
         name: Build and push
         uses: docker/build-push-action@v3
         with:
+          context: .
           push: true
           tags: imrehg/linkhub_prometheus_exporter:latest,imrehg/linkhub_prometheus_exporter:${{github.ref_name}}
