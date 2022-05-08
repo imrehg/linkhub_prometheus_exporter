@@ -145,11 +145,17 @@ def main():
     """Main entry point for the exporter"""
     logging.info("Linkhub Prometheus Exporter, version %s", __version__)
 
-    router_metrics = RouterMetrics(
-        request_key=settings.REQUEST_KEY,
-        box_addr=settings.BOX_ADDRESS,
-        polling_interval_seconds=settings.POLLING_INTERVAL_SECONDS,
-    )
+    try:
+        router_metrics = RouterMetrics(
+            request_key=settings.REQUEST_KEY,
+            box_addr=settings.BOX_ADDRESS,
+            polling_interval_seconds=settings.POLLING_INTERVAL_SECONDS,
+        )
+    except AttributeError as exc:
+        # Every other setting besides REQUEST_KEY has defaults
+        logging.error("Missing REQUEST_KEY configuration.")
+        raise RuntimeError("Missing REQUEST_KEY configuration.") from exc
+
     start_http_server(
         port=settings.EXPORTER_PORT, addr=settings.EXPORTER_ADDRESS
     )

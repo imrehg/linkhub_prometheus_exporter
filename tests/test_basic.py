@@ -4,6 +4,7 @@ from prometheus_client import REGISTRY
 from linkhub_prometheus_exporter.exporter import RouterMetrics
 
 # Test payload data
+# Exported & modified from real requests
 NETWORK_INFO = {
     "PLMN": "12345",
     "NetworkType": 8,
