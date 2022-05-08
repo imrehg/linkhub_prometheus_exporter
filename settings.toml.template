@@ -1,4 +1,5 @@
-[default]
+# Copy this file to `settings.toml` and update the values
+# for easy change of settings
 polling_interval_seconds = 5
 box_address = '192.168.1.1'
 exporter_address = '0.0.0.0'
