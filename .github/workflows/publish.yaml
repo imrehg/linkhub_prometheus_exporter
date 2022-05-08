@@ -4,8 +4,7 @@ name: Deployment
 on:
   workflow_run:
     branches: master
-    workflows:
-      - Python
+    workflows: [Python]
     types:
       - completed
 
