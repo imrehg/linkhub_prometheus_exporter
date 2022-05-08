@@ -7,3 +7,6 @@
 
 # Built packages
 dist/
+
+# Backup files
+*.bak
