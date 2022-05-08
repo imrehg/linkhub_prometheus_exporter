@@ -32,6 +32,7 @@ RUN poetry install --without=dev --no-root \
  && poetry plugin add poetry-dynamic-versioning-plugin
 
 # Install the project
+COPY README.md ./
 COPY src ./src
 RUN --mount=source=.git,target=.git,type=bind \
     poetry dynamic-versioning \
