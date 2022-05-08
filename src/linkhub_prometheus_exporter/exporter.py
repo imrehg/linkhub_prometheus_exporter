@@ -1,7 +1,9 @@
 import logging
 import time
+from typing import Any
 
 import requests
+from jsonrpcclient import Error, Ok, parse, request_hex
 from prometheus_client import Gauge, Info, start_http_server
 
 from . import __version__
@@ -34,27 +36,6 @@ class RouterMetrics:
         "Total transferred data this month (bytes)",
     )
 
-    payload = {
-        "network_info": {
-            "id": "1",
-            "jsonrpc": "2.0",
-            "method": "GetNetworkInfo",
-            "params": {},
-        },
-        "system_status": {
-            "id": "1",
-            "jsonrpc": "2.0",
-            "method": "GetSystemStatus",
-            "params": {},
-        },
-        "usage_record": {
-            "id": "1",
-            "jsonrpc": "2.0",
-            "method": "GetUsageRecord",
-            "params": {},
-        },
-    }
-
     def __init__(
         self,
         request_key: str,
@@ -72,24 +53,36 @@ class RouterMetrics:
             "Referer": f"http://{self.box_addr}/index.html",
         }
 
-    def run_metrics_loop(self):
+    def run_metrics_loop(self) -> None:
         """Metrics fetching loop"""
 
         while True:
             logging.debug("Fetching metrics.")
-            # self.fetch()
-            self.fetch_new()
+            self.fetch_metrics()
             time.sleep(self.polling_interval_seconds)
 
-    def _box_api_request(self, json: dict) -> dict:
+    def _box_api_request(self, method: str) -> dict[str, Any]:
         response = requests.post(
-            self.url, json=json, headers=self.headers, timeout=self.timeout
+            self.url,
+            json=request_hex(method),
+            headers=self.headers,
+            timeout=self.timeout,
         )
-        logging.debug("Response JSON: %s", response.json())
-        return response.json().get("result", {})
+        logging.debug("Method: %s; response: %s", method, response.json())
+        match parse(response.json()):
+            case Ok(result, _):
+                return result
+            case Error(_, message, _, _):
+                logging.error(
+                    "API error: method: %s; message: %s", method, message
+                )
+                raise RuntimeError(message)
+            case _:
+                assert False, "Impossible parsed response received."
 
     def _read_network_info(self) -> None:
-        results = self._box_api_request(json=self.payload["network_info"])
+        """Requesting, parsing, and updating network info metrics."""
+        results = self._box_api_request("GetNetworkInfo")
         logging.debug("Network info: %s", results)
 
         # Set Prometheus metrics
@@ -114,7 +107,8 @@ class RouterMetrics:
             )
 
     def _read_system_status(self) -> None:
-        results = self._box_api_request(json=self.payload["system_status"])
+        """Requesting, parsing, and updating system status metrics."""
+        results = self._box_api_request("GetSystemStatus")
         logging.debug("System status: %s", results)
 
         # Set Prometheus metrics
@@ -122,7 +116,8 @@ class RouterMetrics:
             self.connected_devices.set(value)
 
     def _read_usage_record(self) -> None:
-        results = self._box_api_request(json=self.payload["usage_record"])
+        """Requesting, parsing, and updating usage record metrics."""
+        results = self._box_api_request("GetUsageRecord")
         logging.debug("Usage record: %s", results)
 
         # Set Prometheus metrics
@@ -135,13 +130,14 @@ class RouterMetrics:
         if value := results.get("HUseData"):
             self.total_transfer_this_month.set(value)
 
-    def fetch_new(self):
+    def fetch_metrics(self) -> None:
+        """Fetch all relevant metrics."""
         self._read_network_info()
         self._read_system_status()
         self._read_usage_record()
 
 
-def main():
+def main() -> None:
     """Main entry point for the exporter"""
     logging.info("Linkhub Prometheus Exporter, version %s", __version__)
 
