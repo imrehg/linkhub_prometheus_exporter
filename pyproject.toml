@@ -35,7 +35,7 @@ module = [
 ignore_missing_imports = true
 
 [tool.poetry.scripts]
-exporter = "linkhub_prometheus_exporter.exporter:main"
+linkhub_exporter = "linkhub_prometheus_exporter.exporter:main"
 
 [tool.poetry-dynamic-versioning]
 enable = true
@@ -44,7 +44,7 @@ style = "pep440"
 dirty = true
 
 [tool.poetry-dynamic-versioning.substitution]
-files = ["src/*/__init__.py"]
+files = ["*/__init__.py", "*/*/__init__.py"]
 
 [build-system]
 requires = ["poetry>=1.2.0b1", "poetry-dynamic-versioning-plugin"]
