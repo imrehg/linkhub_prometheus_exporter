@@ -6,7 +6,47 @@ Tested with an Alcatel HH41 4G LTE hotspot WiFi router.
 
 ## Usage
 
-Detailed usage TBC.
+Install Poetry for you system (need `>=1.2.0b1` currently if using
+the dynamic versioning, and have to add the relevant plugin with
+`poetry plugin add poetry-dynamic-versioning-plugin`). Then install the
+package with:
+
+```shell
+poetry install
+```
+
+You'll need a Request Key to run exporter, which is derived from the
+login password of router box admin interface. See below how to
+obtain it.
+
+Once you have a key, you can set it in multiple ways:
+
+* In `.secrets.toml`, see the template shipped at `secrets.toml.template`
+  for the format (note the `.` for the non-template filename), OR
+* Set an environment variable `DYNACONF_REQUEST_KEY` with the value, e.g.
+  `export DYNACONF_REQUEST_KEY=...` in your shell where `...` is replaced with
+  the actual value.
+
+Then start up the exporter:
+
+```shell
+poetry run exporter
+```
+
+### Running in Docker
+
+With the
+
+### Getting the request key
+
+Currently the easiest way to get it is to:
+
+* Open a browser  and navigate to your router admin interface
+* Open the debug console, and ensure that network requests are logged there
+* Log in to the admin interface
+* Check requests going to `webapi`, look for the requests headers, and the
+  value of the `_TclRequestVerificationKey` is what you should use for the
+  request key setting of this exporter.
 
 ## License
 
