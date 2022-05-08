@@ -4,6 +4,7 @@ import time
 import requests
 from prometheus_client import Gauge, Info, start_http_server
 
+from . import __version__
 from .config import settings
 
 logging.basicConfig(level=settings.get("LOG_LEVEL", default="INFO"))
@@ -142,6 +143,7 @@ class RouterMetrics:
 
 def main():
     """Main entry point for the exporter"""
+    logging.info("Linkhub Prometheus Exporter, version %s", __version__)
 
     router_metrics = RouterMetrics(
         request_key=settings.REQUEST_KEY,
