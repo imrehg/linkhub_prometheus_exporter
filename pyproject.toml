@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "linkhub_prometheus_exporter"
-version = "0.1.0"
+version = "0.0.0"
 description = "A Prometheus metrics exporter for Alcatel Linkhub 4G router boxes"
 authors = ["Gergely Imreh <gergely@imreh.net>"]
 
@@ -35,12 +35,15 @@ module = [
 ignore_missing_imports = true
 
 [tool.poetry.scripts]
-exporter = "linkhub_prometheus_exporter.exporter:main"
+linkhub_exporter = "linkhub_prometheus_exporter.exporter:main"
 
 [tool.poetry-dynamic-versioning]
 enable = true
 vcs = "git"
 style = "pep440"
+
+[tool.poetry-dynamic-versioning.substitution]
+files = ["*/__init__.py", "*/*/__init__.py"]
 
 [build-system]
 requires = ["poetry>=1.2.0b1", "poetry-dynamic-versioning-plugin"]

@@ -1,6 +1,6 @@
-
-# Ignore dynaconf secret files
+# Ignore various secret files
 .secrets.*
+.env
 
-# Coverage.py generated data
-.coverage
+# Built packages
+dist/
