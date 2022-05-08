@@ -1,5 +1,6 @@
 import logging
 import time
+from typing import Any
 
 import requests
 from jsonrpcclient import Error, Ok, parse, request_hex
@@ -52,7 +53,7 @@ class RouterMetrics:
             "Referer": f"http://{self.box_addr}/index.html",
         }
 
-    def run_metrics_loop(self):
+    def run_metrics_loop(self) -> None:
         """Metrics fetching loop"""
 
         while True:
@@ -60,7 +61,7 @@ class RouterMetrics:
             self.fetch_metrics()
             time.sleep(self.polling_interval_seconds)
 
-    def _box_api_request(self, method: str) -> dict:
+    def _box_api_request(self, method: str) -> dict[str, Any]:
         response = requests.post(
             self.url,
             json=request_hex(method),
@@ -129,14 +130,14 @@ class RouterMetrics:
         if value := results.get("HUseData"):
             self.total_transfer_this_month.set(value)
 
-    def fetch_metrics(self):
+    def fetch_metrics(self) -> None:
         """Fetch all relevant metrics."""
         self._read_network_info()
         self._read_system_status()
         self._read_usage_record()
 
 
-def main():
+def main() -> None:
     """Main entry point for the exporter"""
     logging.info("Linkhub Prometheus Exporter, version %s", __version__)
 
