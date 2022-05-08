@@ -1,6 +1,7 @@
-# Ignore various secret files
+# Ignore various secret & settings files
 .secrets.*
 .env
+settings.toml
 
 # Built packages
 dist/
