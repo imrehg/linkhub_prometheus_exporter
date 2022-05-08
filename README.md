@@ -35,7 +35,26 @@ poetry run exporter
 
 ### Running in Docker
 
-With the
+Build the image with the included Dockerfile from the cloned repository,
+let's say:
+
+```shell
+docker build -t linkhub_exporter
+```
+
+and then run the resulting image as:
+
+```shell
+docker run -ti --rm -e "DYNACONF_REQUEST_KEY=...." -p 9877:9877 linkhub_exporter
+```
+
+which exposes the Prometheus metrics on `http://localhost:9877`. Don't forget
+to set the `DYNACONF_REQUEST_KEY` value, or add it in an `.env` file and
+run things as:
+
+```shell
+docker run -ti --rm --env-file .env -p 9877:9877 linkhub_exporter
+```
 
 ### Getting the request key
 
