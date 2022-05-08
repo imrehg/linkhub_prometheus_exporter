@@ -41,7 +41,6 @@ linkhub_exporter = "linkhub_prometheus_exporter.exporter:main"
 enable = true
 vcs = "git"
 style = "pep440"
-dirty = true
 
 [tool.poetry-dynamic-versioning.substitution]
 files = ["*/__init__.py", "*/*/__init__.py"]
