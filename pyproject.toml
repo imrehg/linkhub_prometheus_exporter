@@ -11,6 +11,17 @@ license = "Apache-2.0"
 include = [
     "LICENSE.txt",
 ]
+classifiers = [
+    'Development Status :: 3 - Alpha',
+    'Framework :: Pytest',
+    'Intended Audience :: Information Technology',
+    'Intended Audience :: System Administrators',
+    'Natural Language :: English',
+    'Operating System :: OS Independent',
+    'Topic :: System :: Monitoring',
+    'Topic :: System :: Networking :: Monitoring',
+    'Typing :: Typed',
+]
 
 [tool.poetry.dependencies]
 python = "^3.10"
@@ -20,7 +31,15 @@ dynaconf = "^3.1.8"
 types-requests = "^2.27.25"
 jsonrpcclient = "^4.0.2"
 
-[tool.poetry.dev-dependencies]
+[tool.poetry.group.dev.dependencies]
+isort = "*"
+black = "*"
+nox = "*"
+
+[tool.poetry.group.test]
+optional = true
+
+[tool.poetry.group.test.dependencies]
 pytest = "*"
 pytest-cov = "*"
 requests-mock = "*"
@@ -29,6 +48,12 @@ black = "*"
 flake8 = "*"
 mypy = "*"
 bandit = "*"
+
+[tool.poetry.scripts]
+linkhub_exporter = "linkhub_prometheus_exporter.exporter:main"
+
+[tool.poetry.urls]
+"Bug Tracker" = "https://github.com/imrehg/linkhub_prometheus_exporter/issues"
 
 [tool.isort]
 profile = "black"
@@ -43,16 +68,10 @@ module = [
 ]
 ignore_missing_imports = true
 
-[tool.poetry.scripts]
-linkhub_exporter = "linkhub_prometheus_exporter.exporter:main"
-
 [tool.poetry-dynamic-versioning]
 enable = true
 vcs = "git"
 style = "pep440"
-
-[tool.poetry-dynamic-versioning.substitution]
-files = ["*/__init__.py", "*/*/__init__.py"]
 
 [build-system]
 requires = ["poetry>=1.2.0b1", "poetry-dynamic-versioning-plugin"]

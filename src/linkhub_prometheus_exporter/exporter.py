@@ -78,7 +78,7 @@ class RouterMetrics:
                 )
                 raise RuntimeError(message)
             case _:
-                assert False, "Impossible parsed response received."
+                raise AssertionError("Impossible parsed response received.")
 
     def _read_network_info(self) -> None:
         """Requesting, parsing, and updating network info metrics."""
@@ -140,6 +140,13 @@ class RouterMetrics:
 def main() -> None:
     """Main entry point for the exporter"""
     logging.info("Linkhub Prometheus Exporter, version %s", __version__)
+    # Add exporter metadata to what's exported
+    exporter_info = Info("exporter_info", "Exporter information")
+    exporter_info.info(
+        {
+            "version": __version__,
+        }
+    )
 
     try:
         router_metrics = RouterMetrics(
@@ -152,6 +159,11 @@ def main() -> None:
         logging.error("Missing REQUEST_KEY configuration.")
         raise RuntimeError("Missing REQUEST_KEY configuration.") from exc
 
+    logging.info(
+        "Server starting on http://%s:%d",
+        settings.EXPORTER_ADDRESS,
+        settings.EXPORTER_PORT,
+    )
     start_http_server(
         port=settings.EXPORTER_PORT, addr=settings.EXPORTER_ADDRESS
     )
