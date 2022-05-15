@@ -78,7 +78,7 @@ class RouterMetrics:
                 )
                 raise RuntimeError(message)
             case _:
-                assert False, "Impossible parsed response received."
+                raise AssertionError("Impossible parsed response received.")
 
     def _read_network_info(self) -> None:
         """Requesting, parsing, and updating network info metrics."""
@@ -152,6 +152,11 @@ def main() -> None:
         logging.error("Missing REQUEST_KEY configuration.")
         raise RuntimeError("Missing REQUEST_KEY configuration.") from exc
 
+    logging.info(
+        "Server starting on http://%s:%d",
+        settings.EXPORTER_ADDRESS,
+        settings.EXPORTER_PORT,
+    )
     start_http_server(
         port=settings.EXPORTER_PORT, addr=settings.EXPORTER_ADDRESS
     )
