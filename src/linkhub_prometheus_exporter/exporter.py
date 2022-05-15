@@ -140,6 +140,13 @@ class RouterMetrics:
 def main() -> None:
     """Main entry point for the exporter"""
     logging.info("Linkhub Prometheus Exporter, version %s", __version__)
+    # Add exporter metadata to what's exported
+    exporter_info = Info("exporter_info", "Exporter information")
+    exporter_info.info(
+        {
+            "version": __version__,
+        }
+    )
 
     try:
         router_metrics = RouterMetrics(
