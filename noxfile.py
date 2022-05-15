@@ -28,7 +28,7 @@ def lint(session):
 @nox.session(python=["3.10", "3.11"])
 def test(session):
     """Run tests on the code."""
-    session.run("poetry", "install", external=True)
+    session.run("poetry", "install", '--with', 'test', external=True)
     try:
         session.run("coverage", "run", "-m", "pytest")
     finally:
