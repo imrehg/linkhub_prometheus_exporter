@@ -23,8 +23,8 @@ Once you have a key, you can set it in multiple ways:
 
 * In `.secrets.toml`, see the template shipped at `secrets.toml.template`
   for the format (note the `.` for the non-template filename), OR
-* Set an environment variable `DYNACONF_REQUEST_KEY` with the value, e.g.
-  `export DYNACONF_REQUEST_KEY=...` in your shell where `...` is replaced with
+* Set an environment variable `LINKHUB_REQUEST_KEY` with the value, e.g.
+  `export LINKHUB_REQUEST_KEY=...` in your shell where `...` is replaced with
   the actual value.
 
 Then start up the exporter:
@@ -45,11 +45,11 @@ docker build -t linkhub_exporter
 and then run the resulting image as:
 
 ```shell
-docker run -ti --rm -e "DYNACONF_REQUEST_KEY=...." -p 9877:9877 linkhub_exporter
+docker run -ti --rm -e "LINKHUB_REQUEST_KEY=...." -p 9877:9877 linkhub_exporter
 ```
 
 which exposes the Prometheus metrics on `http://localhost:9877`. Don't forget
-to set the `DYNACONF_REQUEST_KEY` value, or add it in an `.env` file and
+to set the `LINKHUB_REQUEST_KEY` value, or add it in an `.env` file and
 run things as:
 
 ```shell
