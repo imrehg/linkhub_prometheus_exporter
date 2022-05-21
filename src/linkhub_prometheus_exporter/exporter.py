@@ -35,6 +35,10 @@ class RouterMetrics:
         "total_transfer_this_month",
         "Total transferred data this month (bytes)",
     )
+    linkhub_up = Gauge(
+        "linkhub_up",
+        "Marker whether or not the LinkHub scrape has worked (yes=1, no=0)",
+    )
 
     def __init__(
         self,
@@ -132,9 +136,16 @@ class RouterMetrics:
 
     def fetch_metrics(self) -> None:
         """Fetch all relevant metrics."""
-        self._read_network_info()
-        self._read_system_status()
-        self._read_usage_record()
+        try:
+            self._read_network_info()
+            self._read_system_status()
+            self._read_usage_record()
+            self.linkhub_up.set(1)
+        except:  # noqa: E722
+            # TODO: This is not really working here yet,
+            # since we are crashing right after
+            self.linkhub_up.set(0)
+            raise
 
 
 def main() -> None:
