@@ -56,6 +56,47 @@ run things as:
 docker run -ti --rm --env-file .env -p 9877:9877 linkhub_exporter
 ```
 
+### Running in Docker Compose
+
+You can add this exporter as a container in your `docker-compose.yml`, along
+similar lines (other container configuration has been snip'd):
+
+```yaml
+  linkhub:
+    image: imrehg/linkhub_prometheus_exporter
+    restart: always
+    ports:
+      - "9877:9877"
+    environment:
+      - LINKHUB_EXPORTER_ADDRESS='0.0.0.0'
+    env_file:
+      - .env
+```
+
+The `LINKHUB_REQUEST_KEY` value should be set in the `.env` file (or wherever
+you will keep the configuration for this particular service). You can comment
+out the `ports` section if you don't want to view the results outside of the
+docker compose run services. You might want to add `network` field if you
+are running things within a custom network.
+
+Finally, you probably want to set an explicit tag for the image value.
+
+### Setting up task in Prometheus
+
+The setup in Prometheus is pretty straightforward, using the relevant IP/port
+combo. If the server is run manually or through Docker on its own, use the machine's
+IP that's running it, and the port that is set in the config. If docker compose
+is used, the can use the service name to connect to it automatically, say like this:
+
+```yaml
+  - job_name: 'linkhub'
+    scrape_interval: 5s
+    static_configs:
+      - targets: ['linkhub:9877']
+```
+
+(The other parts of the Prometheus configuration are omitted.)
+
 ### Getting the request key
 
 Currently the easiest way to get it is to:
