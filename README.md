@@ -4,6 +4,8 @@ A Prometheus exporter for Alcatel Linkhub boxes.
 
 Tested with an Alcatel HH41 4G LTE hotspot WiFi router.
 
+![Alcatel HH41 product info](docs/linkhub_product.jpg)
+
 ## Usage
 
 Install Poetry for you system (need `>=1.2.0b1` currently if using
@@ -107,6 +109,16 @@ Currently the easiest way to get it is to:
 * Check requests going to `webapi`, look for the requests headers, and the
   value of the `_TclRequestVerificationKey` is what you should use for the
   request key setting of this exporter.
+
+
+### Showing the metrics in Grafana
+
+An [example Grafana dashboard](extra/Grafana_Sammple_LinkHub_Metrics.json)
+setup is provided in the `extra` folder.
+
+![Grafana dashboard screenshot part 1](docs/grafana_screenshot1.png)
+
+![Grafana dashboard screenshot part 2](docs/grafana_screenshot2.png)
 
 ## License
 
