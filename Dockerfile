@@ -15,7 +15,8 @@ ENV PYTHONUNBUFFERED=1 \
     # it gets named `.venv`
     POETRY_VIRTUALENVS_IN_PROJECT=true \
     # do not ask any interactive question
-    POETRY_NO_INTERACTION=1
+    POETRY_NO_INTERACTION=1 \
+    POETRY_DYNAMIC_VERSIONING_PLUGIN_VERSION=0.3.1
 
 RUN pip install --upgrade pip \
  && pip install 'poetry>=$POETRY_VERSION'
@@ -29,7 +30,7 @@ COPY pyproject.toml poetry.lock ./
 # plugin to remove the need to mount the `.git` folder, and
 # thus caching better.
 RUN poetry install --without=dev --no-root \
- && poetry plugin add poetry-dynamic-versioning-plugin
+ && poetry plugin add poetry-dynamic-versioning-plugin@${POETRY_DYNAMIC_VERSIONING_PLUGIN_VERSION}
 
 # Install the project
 COPY README.md ./
